@@ -15,7 +15,7 @@ import modelo.Cidade;
 public class DAOCidade extends DAO<Cidade>{
 
 	public Cidade read (Object chave){
-		String cpf = (String) chave;	//casting para o tipo da chave
+		String nome = (String) chave;	//casting para o tipo da chave
 		Query q = manager.query();
 		q.constrain(Cidade.class);
 		q.descend("nome").constrain(nome);

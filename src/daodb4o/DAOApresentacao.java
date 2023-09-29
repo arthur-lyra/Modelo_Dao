@@ -37,18 +37,18 @@ public class DAOApresentacao  extends DAO<Apresentacao>{
 	//  consultas de Aluguel
 	//--------------------------------------------
 
-	public List<Apresentacao> alugueisModelo(String modelo){
+	public List<Apresentacao> Listarapresentacoes(String modelo){
 		Query q;
 		q = manager.query();
 		q.constrain(Apresentacao.class);
-		q.descend("carro").descend("modelo").constrain(modelo);
+		q.descend("data").constrain(modelo);
 		return q.execute();
 	}
 
-	public List<Apresentacao> alugueisFinalizados(){
-		Query q = manager.query();
-		q.constrain(Apresentacao.class);
-		q.descend("finalizado").constrain(true);
-		return q.execute();
-	}
+	//public List<Apresentacao> alugueisFinalizados(){
+		//Query q = manager.query();
+		//q.constrain(Apresentacao.class);
+		//q.descend("finalizado").constrain(true);
+		//return q.execute();
+	//}
 }

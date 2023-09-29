@@ -13,9 +13,9 @@ import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
 
-import modelo.Aluguel;
-import modelo.Carro;
-import modelo.Cliente;
+import modelo.Cidade;
+import modelo.Apresentacao;
+import modelo.Artista;
 
 public class Util {
 	private static ObjectContainer manager=null;
@@ -31,16 +31,16 @@ public class Util {
 		EmbeddedConfiguration config =  Db4oEmbedded.newConfiguration(); 
 		config.common().messageLevel(0);  // mensagens na tela 0(desliga),1,2,3...
 		
-		// habilitar cascata na alteração, remoção e leitura
-		config.common().objectClass(Carro.class).cascadeOnDelete(false);;
-		config.common().objectClass(Carro.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Carro.class).cascadeOnActivate(true);
-		config.common().objectClass(Cliente.class).cascadeOnDelete(false);;
-		config.common().objectClass(Cliente.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Cliente.class).cascadeOnActivate(true);
-		config.common().objectClass(Aluguel.class).cascadeOnDelete(false);;
-		config.common().objectClass(Aluguel.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Aluguel.class).cascadeOnActivate(true);
+		// habilitar cascata na alteraï¿½ï¿½o, remoï¿½ï¿½o e leitura
+		config.common().objectClass(Cidade.class).cascadeOnDelete(false);;
+		config.common().objectClass(Cidade.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Cidade.class).cascadeOnActivate(true);
+		config.common().objectClass(Apresentacao.class).cascadeOnDelete(false);;
+		config.common().objectClass(Apresentacao.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Apresentacao.class).cascadeOnActivate(true);
+		config.common().objectClass(Artista.class).cascadeOnDelete(false);;
+		config.common().objectClass(Artista.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Artista.class).cascadeOnActivate(true);
 		
 		//conexao local
 		manager = Db4oEmbedded.openFile(config, "banco.db4o");
@@ -55,18 +55,18 @@ public class Util {
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration( ) ;
 		config.common().messageLevel(0);  // 0,1,2,3...
 
-		// habilitar cascata na alteração, remoção e leitura
-		config.common().objectClass(Carro.class).cascadeOnDelete(false);;
-		config.common().objectClass(Carro.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Carro.class).cascadeOnActivate(true);
-		config.common().objectClass(Cliente.class).cascadeOnDelete(false);;
-		config.common().objectClass(Cliente.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Cliente.class).cascadeOnActivate(true);
-		config.common().objectClass(Aluguel.class).cascadeOnDelete(false);;
-		config.common().objectClass(Aluguel.class).cascadeOnUpdate(true);;
-		config.common().objectClass(Aluguel.class).cascadeOnActivate(true);
+		// habilitar cascata na alteraï¿½ï¿½o, remoï¿½ï¿½o e leitura
+		config.common().objectClass(Cidade.class).cascadeOnDelete(false);;
+		config.common().objectClass(Cidade.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Cidade.class).cascadeOnActivate(true);
+		config.common().objectClass(Apresentacao.class).cascadeOnDelete(false);;
+		config.common().objectClass(Apresentacao.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Apresentacao.class).cascadeOnActivate(true);
+		config.common().objectClass(Artista.class).cascadeOnDelete(false);;
+		config.common().objectClass(Artista.class).cascadeOnUpdate(true);;
+		config.common().objectClass(Artista.class).cascadeOnActivate(true);
 
-		//Conexão remota 
+		//Conexï¿½o remota 
 		//****************
 		String ipservidor="";
 		//ipservidor = "10.0.4.189";		// computador do professor (lab3)
