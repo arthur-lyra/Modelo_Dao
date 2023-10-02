@@ -1,9 +1,4 @@
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- *
- */
+
 package appswing;
 
 import java.awt.Color;
@@ -182,7 +177,7 @@ public class TelaArtista {
 						label.setText("nao implementado " );
 						String nome = (String) table.getValueAt( table.getSelectedRow(), 0);
 						Fachada.excluirArtista(nome);
-						label.setText("cliente apagado" );
+						label.setText("artista apagado" );
 						listagem();
 					}
 					else

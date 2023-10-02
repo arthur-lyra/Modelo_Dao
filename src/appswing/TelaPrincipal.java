@@ -1,9 +1,4 @@
 package appswing;
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POO
- * Prof. Fausto Maranh�o Ayres
- **********************************/
 
 import java.awt.Font;
 import java.awt.Image;

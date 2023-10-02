@@ -1,8 +1,4 @@
-/**********************************
- * IFPB - SI
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- **********************************/
+
 package daodb4o;
 
 import java.util.List;
@@ -25,7 +21,7 @@ public class DAOApresentacao  extends DAO<Apresentacao>{
 			return null;
 	}
 
-	//metodo da classe DAO sobrescrito DAOAluguel para
+
 	//criar "id" sequencial 
 	public void create(Apresentacao obj){
 		int novoid = super.gerarId();  	//gerar novo id da classe
@@ -33,9 +29,6 @@ public class DAOApresentacao  extends DAO<Apresentacao>{
 		manager.store( obj );
 	}
 
-	//--------------------------------------------
-	//  consultas de Aluguel
-	//--------------------------------------------
 
 	//listar Apresentações na data x
 	public List<Apresentacao> Listarapresentacoes(String modelo){

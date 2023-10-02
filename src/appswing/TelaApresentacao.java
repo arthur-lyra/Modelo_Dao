@@ -1,9 +1,4 @@
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- *
- */
+
 package appswing;
 
 import java.awt.Color;
@@ -17,22 +12,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Apresentacao;
-import modelo.Artista;
-import modelo.Cidade;
 import regras_negocio.Fachada;
 
 public class TelaApresentacao {
@@ -85,7 +69,7 @@ public class TelaApresentacao {
 	private void initialize() {
 		frame = new JDialog();
 		frame.setModal(true);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setTitle("Apresentacao");
 		frame.setBounds(100, 100, 729, 419);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -249,10 +233,15 @@ public class TelaApresentacao {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					if (table.getSelectedRow() >= 0) {
-						int precoIngresso = Integer.parseInt((String) table.getValueAt( table.getSelectedRow(), 2)); //coluna 2
-						Fachada.alterarIngresso( table.getSelectedRow(), precoIngresso);
-						label.setText("Ingresso ajustado" );
-						listagem();
+						// popup pra inserir o novo preco
+						String novoPrecoStr = JOptionPane.showInputDialog("Digite o novo preço do ingresso:");
+						// Verifique se o usuário clicou em "Cancelar" ou deixou o campo em branco
+						if (novoPrecoStr != null && !novoPrecoStr.isEmpty()) {
+							int novoPrecoIngresso = Integer.parseInt(novoPrecoStr);
+							Fachada.alterarIngresso(table.getSelectedRow()+1, novoPrecoIngresso);
+							label.setText("Ingresso ajustado");
+							listagem();
+						}
 					}
 				}
 				catch(Exception ex) {

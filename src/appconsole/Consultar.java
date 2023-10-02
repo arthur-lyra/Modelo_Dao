@@ -1,9 +1,4 @@
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- *
- */
+
 
 package appconsole;
 
@@ -32,8 +27,6 @@ public class Consultar {
 			for(Artista apr : Fachada.apresentacaoCidade("Campina Grande"))
 				System.out.println(apr);
 
-
-			//System.out.println("clientes que possuem 2 alugueis");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

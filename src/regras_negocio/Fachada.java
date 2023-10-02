@@ -84,6 +84,11 @@ public class Fachada {
 		if(art==null) 
 			throw new Exception ("Artista " + nome + " incorreto para exclusao");
 
+
+		for(Apresentacao a : art.getApresentacoes()){
+			daoapresentacao.delete(a);
+		}
+
 		//apagar artista e suas apresentacoes em cascata
 		daoartista.delete(art);
 		DAO.commit();
@@ -96,7 +101,7 @@ public class Fachada {
 		if(ap==null)
 			throw new Exception("Id:" + id + "incorreto para exclusão da apresentacao");
 
-		//apagar apresentacao e seus artistas em cascata
+		//apagar apresentacao
 		daoapresentacao.delete(ap);
 		DAO.commit();
 	}
@@ -107,6 +112,14 @@ public class Fachada {
 
 		if(cid==null)
 			throw new Exception( cid + "incorreta para exclusão");
+
+		List<Apresentacao> apresentacoes = daoapresentacao.readAll();
+
+		for(Apresentacao a : apresentacoes)
+			if(a.getCidade()==cid) {
+				daoapresentacao.delete(a);
+			}
+
 
 		//apagar cidade
 		daocidade.delete(cid);

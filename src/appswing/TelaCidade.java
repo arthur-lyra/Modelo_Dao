@@ -1,9 +1,4 @@
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- *
- */
+
 package appswing;
 
 import java.awt.Color;
@@ -200,7 +195,7 @@ public class TelaCidade {
 		button_2.setBounds(281, 213, 171, 23);
 		frame.getContentPane().add(button_2);
 
-		button_3 = new JButton("exibir cidades");
+		button_3 = new JButton("exibir apresentacoes");
 		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -211,12 +206,19 @@ public class TelaCidade {
 						
 						if(cid != null) {
 							String texto="";
-							if(cid.getApresentacoes().isEmpty())
-								texto = "nao possui apresentacoes";
-							else
-								for (Apresentacao a : cid.getApresentacoes()){
-									texto += + a.getId()+ "-" + a.getData() + "-" + a.getArtista() + a.getPrecoIngresso()+ "\n";
-								}
+                                List<Apresentacao> apresentacoes = Fachada.listarApresentacao();
+                            boolean encontrouApresentacoes = false;
+
+                            for (Apresentacao a : apresentacoes) {
+                                if (a.getCidade().equals(cid)) {
+                                    encontrouApresentacoes = true;
+                                    texto += a.getId() + " - " + a.getData() + " - " + a.getArtista().getNome() + " - " + a.getPrecoIngresso() + "\n";
+                                }
+                            }
+
+                            if (!encontrouApresentacoes) {
+                                texto = "Não possui apresentações nesta cidade.";
+                            }
 
 							JOptionPane.showMessageDialog(frame, texto, "Apresentações", 1);
 						}
