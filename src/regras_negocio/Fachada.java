@@ -102,7 +102,16 @@ public class Fachada {
 	}
 
 	public static void excluirCidade(String nome) throws Exception{
+		DAO.begin();
+		Cidade cidade = daocidade.read(nome);
 
+		if(cidade==null)
+			throw new Exception("Cidade " + nome + "incorreta para exclusão");
+
+		Artista art = daoartista.read(art);
+		for (Apresentacao a : art.getApresentacoes()){
+
+		}
 	}
 
 	public static List<Artista>  listarArtistas(){
