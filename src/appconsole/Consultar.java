@@ -7,8 +7,8 @@
 
 package appconsole;
 
-import modelo.Aluguel;
-import modelo.Carro;
+import modelo.Artista;
+import modelo.Apresentacao;
 import regras_negocio.Fachada;
 
 public class Consultar {
@@ -18,19 +18,19 @@ public class Consultar {
 			Fachada.inicializar();
 
 			System.out.println("consultas... \n");
-			System.out.println("\nalugueis de carro palio");
-			for(Aluguel a : Fachada.alugueisModelo("palio"))
+			System.out.println("\nListar Maior Apresentação");
+			for(Artista a : Fachada.ListarMaiorApresentacao())
 				System.out.println(a);
 
 
 			System.out.println("\nalugueis finalizados");
-			for(Aluguel a : Fachada.alugueisFinalizados())
+			for(Apresentacao a : Fachada.Listarapresentacoes(modelo:"17/10/2023"))
 				System.out.println(a);
 
 
 			System.out.println("\ncarros que possuem 1 alugueis");
-			for(Carro c : Fachada.carrosNAlugueis(1))
-				System.out.println(c);
+			for(Artista apr : Fachada.Apresentacaocidade(n:"Campina Grande"))
+				System.out.println(apr);
 
 
 			//System.out.println("clientes que possuem 2 alugueis");

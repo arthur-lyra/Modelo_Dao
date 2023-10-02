@@ -9,21 +9,21 @@ package regras_negocio;
 import java.util.List;
 
 import daodb4o.DAO;
-import daodb4o.DAOAluguel;
-import daodb4o.DAOCarro;
-import daodb4o.DAOCliente;
+import daodb4o.DAOArtista;
+import daodb4o.DAOCidade;
+import daodb4o.DAOApresentacao;
 import daodb4o.DAOUsuario;
-import modelo.Aluguel;
-import modelo.Carro;
-import modelo.Cliente;
+import modelo.Artista;
+import modelo.Cidade;
+import modelo.Apresentacao;
 import modelo.Usuario;
 
 public class Fachada {
 	private Fachada() {}
 
-	private static DAOCarro daocarro = new DAOCarro();  
-	private static DAOAluguel daoaluguel = new DAOAluguel(); 
-	private static DAOCliente daocliente = new DAOCliente(); 
+	private static DAOArtista daoartista = new DAOArtista();  
+	private static DAOApresentacao daoapresentacao = new DAOApresentacao(); 
+	private static DAOCidade daocidade = new DAOCidade(); 
 	private static DAOUsuario daousuario = new DAOUsuario(); 
 	public static Usuario logado;	//contem o objeto Usuario logado em TelaLogin.java
 
@@ -35,27 +35,27 @@ public class Fachada {
 	}
 
 
-	public static Carro cadastrarCarro(String placa, String modelo) throws Exception{
+	public static Artista cadastrarArtista(String nome) throws Exception{
 		DAO.begin();
-		Carro carro = daocarro.read(placa);
-		if (carro!=null)
-			throw new Exception("carro ja cadastrado:" + placa);
-		carro = new Carro(placa, modelo);
+		Artista artista = daoartista.read(nome);
+		if (artista!=null)
+			throw new Exception("Artista já cadastrado:" + nome);
+		artista = new Artista(nome);
 
-		daocarro.create(carro);
+		daoartista.create(artista);
 		DAO.commit();
-		return carro;
+		return artista;
 	}
 
 	public static Aluguel alugarCarro(String cpf, String placa, double diaria, String data1, String data2) throws Exception{
 		DAO.begin();
-		Carro car =  daocarro.read(placa);
+		Carro car =  daoartista.read(placa);
 		if(car==null) 
 			throw new Exception ("carro incorreto para aluguel "+placa);
 		if(car.isAlugado()) 
 			throw new Exception ("carro ja esta alugado:"+placa);
 
-		Cliente cli = daocliente.read(cpf);
+		Cliente cli = daocidade.read(cpf);
 		if(cli==null) 
 			throw new Exception ("cliente incorreto para aluguel " + cpf);
 
@@ -66,16 +66,16 @@ public class Fachada {
 		car.setAlugado(true);
 		cli.adicionar(aluguel);
 
-		daoaluguel.create(aluguel);
-		daocarro.update(car);
-		daocliente.update(cli);
+		daoapresentacao.create(aluguel);
+		daoartista.update(car);
+		daocidade.update(cli);
 		DAO.commit();
 		return aluguel;
 	}
 
 	public static void devolverCarro(String placa) throws Exception{
 		DAO.begin();
-		Carro car =  daocarro.read(placa);
+		Carro car =  daoartista.read(placa);
 		if(car==null) 
 			throw new Exception ("carro incorreto para devolucao");
 
@@ -87,49 +87,35 @@ public class Fachada {
 		Aluguel alug = car.getAlugueis().get(car.getAlugueis().size()-1);
 		alug.setFinalizado(true);
 
-		daocarro.update(car);
+		daoartista.update(car);
 		DAO.commit();
 	}
 
-	public static void excluirCarro(String placa) throws Exception{
+	public static void excluirArtista(String nome) throws Exception{
 		DAO.begin();
-		Carro car =  daocarro.read(placa);
-		if(car==null) 
-			throw new Exception ("carro incorreto para exclusao " + placa);
-
-		if(! car.isAlugado()) 
-			throw new Exception ("carro alugado nao pode ser excluido " + placa);
-
-
-		//alterar os clientes dos alugueis do carro
-		for (Aluguel a : car.getAlugueis()) {
-			Cliente cli = a.getCliente();
-			cli.remover(a);
-			//atualizar o cliente no banco
-			daocliente.update(cli);
-			//apagar o aluguel
-			daoaluguel.delete(a);
-		}
+		Artista art =  daoartista.read(nome);
+		if(art==null) 
+			throw new Exception ("Artista incorreto para exclusao " + nome);
 
 		//apagar carro e seus alugueis em cascata
-		daocarro.delete(car);
+		daoartista.delete(art);
 		DAO.commit();
 	}
 
-	public static Cliente cadastrarCliente(String nome, String cpf) throws Exception{
+	public static Apresentacao cadastrarApresentacao(Integer id, String cpf) throws Exception{
 		DAO.begin();
-		Cliente cli = daocliente.read(cpf);
-		if (cli!=null)
+		Apresentacao apr = daoapresentacao.read(id);
+		if (apr!=null)
 			throw new Exception("Pessoa ja cadastrado:" + cpf);
-		cli = new Cliente(nome, cpf);
+		apr = new Apresentacao(nome, cpf);
 
-		daocliente.create(cli);
+		daocidade.create(cli);
 		DAO.commit();
 		return cli;
 	}
 	public static void excluirCliente(String cpf) throws Exception{
 		DAO.begin();
-		Cliente cli =  daocliente.read(cpf);
+		Cliente cli =  daocidade.read(cpf);
 		if(cli==null) 
 			throw new Exception ("cliente incorreto para exclusao " + cpf);
 
@@ -144,18 +130,18 @@ public class Fachada {
 		for (Aluguel a : cli.getAlugueis()) {
 			Carro car = a.getCarro();
 			car.remover(a);
-			daocarro.update(car);
-			daoaluguel.delete(a);
+			daoartista.update(car);
+			daoapresentacao.delete(a);
 		}
 
 		//apagar carro e seus alugueis em cascata
-		daocliente.delete(cli);
+		daocidade.delete(cli);
 		DAO.commit();
 	}
 
 	public static void excluirAluguel(int id) throws Exception{
 		DAO.begin();
-		Aluguel aluguel =  daoaluguel.read(id);
+		Aluguel aluguel =  daoapresentacao.read(id);
 		if(aluguel==null) 
 			throw new Exception ("aluguel incorreto para exclusao " + id);
 
@@ -168,29 +154,29 @@ public class Fachada {
 		cli.remover(aluguel);
 		car.remover(aluguel);
 
-		daocliente.update(cli);
-		daocarro.update(car);
-		daoaluguel.delete(aluguel);
+		daocidade.update(cli);
+		daoartista.update(car);
+		daoapresentacao.delete(aluguel);
 		DAO.commit();
 	}
 
-	public static List<Cliente>  listarClientes(){
+	public static List<Artista>  listarArtistas(){
 		DAO.begin();
-		List<Cliente> resultados =  daocliente.readAll();
+		List<Artista> resultados =  daoartista.readAll();
 		DAO.commit();
 		return resultados;
 	} 
 
-	public static List<Carro>  listarCarros(){
+	public static List<Apresentacao>  listarApresentacao(){
 		DAO.begin();
-		List<Carro> resultados =  daocarro.readAll();
+		List<Apresentacao> resultados =  daoapresentacao.readAll();
 		DAO.commit();
 		return resultados;
 	}
 
-	public static List<Aluguel> listarAlugueis(){
+	public static List<Cidade> listarCidades(){
 		DAO.begin();
-		List<Aluguel> resultados =  daoaluguel.readAll();
+		List<Cidade> resultados =  daocidade.readAll();
 		DAO.commit();
 		return resultados;
 	}
@@ -202,32 +188,32 @@ public class Fachada {
 		return resultados;
 	} 
 
-	public static List<Aluguel> alugueisModelo(String modelo){	
+	public static List<Apresentacao> Listarapresentacoes(String modelo){	
 		DAO.begin();
-		List<Aluguel> resultados =  daoaluguel.alugueisModelo(modelo);
+		List<Apresentacao> resultados =  daoapresentacao.Listarapresentacoes(modelo);
 		DAO.commit();
 		return resultados;
 	}
 
-	public static List<Aluguel> alugueisFinalizados(){	
+	public static List<Artista> ListarMaiorApresentacao(){	
 		DAO.begin();
-		List<Aluguel> resultados =  daoaluguel.alugueisFinalizados();
+		List<Artista> resultados =  daoartista.ListarMaiorApresentacao();
 		DAO.commit();
 		return resultados;
 	}
 
-	public static List<Carro>  carrosNAlugueis(int n){	
+	public static List<Artista>  Apresentacaocidade(String n){	
 		DAO.begin();
-		List<Carro> resultados =  daocarro.carrosNAlugueis(n);
+		List<Artista> resultados =  daoartista.Apresentacaocidade(n);
 		DAO.commit();
 		return resultados;
 	}
 
-	public static Carro localizarCarro(String placa){
-		return daocarro.read(placa);
+	public static Artista localizarArtista(String nome){
+		return daoartista.read(nome);
 	}
-	public static Cliente localizarCliente(String cpf){
-		return daocliente.read(cpf);
+	public static Apresentacao localizarApresentacao(int id){
+		return daoapresentacao.read(id);
 	}
 
 	

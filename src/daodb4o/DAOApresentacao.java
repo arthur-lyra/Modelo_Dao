@@ -37,6 +37,7 @@ public class DAOApresentacao  extends DAO<Apresentacao>{
 	//  consultas de Aluguel
 	//--------------------------------------------
 
+	//listar Apresentações na data x
 	public List<Apresentacao> Listarapresentacoes(String modelo){
 		Query q;
 		q = manager.query();
@@ -45,10 +46,4 @@ public class DAOApresentacao  extends DAO<Apresentacao>{
 		return q.execute();
 	}
 
-	//public List<Apresentacao> alugueisFinalizados(){
-		//Query q = manager.query();
-		//q.constrain(Apresentacao.class);
-		//q.descend("finalizado").constrain(true);
-		//return q.execute();
-	//}
 }

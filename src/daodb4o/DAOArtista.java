@@ -6,10 +6,9 @@
 
 package daodb4o;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.db4o.query.Candidate;
-import com.db4o.query.Evaluation;
 import com.db4o.query.Query;
 
 import modelo.Artista;
@@ -17,10 +16,10 @@ import modelo.Artista;
 public class DAOArtista extends DAO<Artista>{
 
 	public Artista read (Object chave){
-		String placa = (String) chave;	//casting para o tipo da chave
+		String nome = (String) chave;	//casting para o tipo da chave
 		Query q = manager.query();
 		q.constrain(Artista.class);
-		q.descend("placa").constrain(placa);
+		q.descend("nome").constrain(nome);
 		List<Artista> resultados = q.execute();
 		if (resultados.size()>0)
 			return resultados.get(0);
@@ -29,30 +28,40 @@ public class DAOArtista extends DAO<Artista>{
 	}
 
 	//--------------------------------------------
-	//  consultas de Carro
+	//  consultas de Artista
 	//--------------------------------------------
-	public List<Artista> carrosNAlugueis(int n){
+
+	//Listar o Artista com maior número de apresentações
+	public List<Artista> ListarMaiorApresentacao() {
 		Query q = manager.query();
 		q.constrain(Artista.class);
-		q.constrain(new Filtro(n));
+
+		List<Artista> resultados = q.execute();
+		int maxPresentations = 0;
+		List<Artista> artistsWithMaxPresentations = new ArrayList<>();
+
+		for (Artista artista : resultados) {
+			int numPresentations = artista.getApresentacoes().size();
+			if (numPresentations > maxPresentations) {
+				maxPresentations = numPresentations;
+				artistsWithMaxPresentations.clear();
+				artistsWithMaxPresentations.add(artista);
+			} else if (numPresentations == maxPresentations) {
+				artistsWithMaxPresentations.add(artista);
+			}
+		}
+
+		return artistsWithMaxPresentations;
+	}
+
+
+	//listar Artistas que se apresentarão na cidade de x
+	public List<Artista> Apresentacaocidade(String n){
+		Query q = manager.query();
+		q.constrain(Artista.class);
+		q.descend("apresentacoes").descend("cidade").descend("nome").constrain(n);
 		return q.execute();
 	}
 
 	
-	//classe interna
-	//class Filtro implements Evaluation {
-		//private int n;
-		//public Filtro(int n) {
-			//this.n = n;
-		//}
-		//public void evaluate(Candidate candidate) {
-			//Carro car = (Carro) candidate.getObject();
-			//if(car.getAlugueis().size()== n) 
-				//candidate.include(true); 
-			//else		
-				//candidate.include(false);
-		//}
-	//}
-
-
 }
