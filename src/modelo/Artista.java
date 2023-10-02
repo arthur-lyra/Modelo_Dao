@@ -47,7 +47,7 @@ public class Artista {
 
 		@Override
 		public String toString() {
-			return "[nome=" + nome + "apresentacoes" + apresentacoes.size() + "]";
+			return "[" + nome + " - apresentacoes: " + apresentacoes.size() + "]";
 		}
 		
 		

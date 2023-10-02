@@ -147,7 +147,7 @@ public class TelaCidade {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
+					if(textField.getText().isEmpty()) {
 						label.setText("campo vazio");
 						return;
 					}
@@ -208,17 +208,17 @@ public class TelaCidade {
 					if (table.getSelectedRow() >= 0){	
 						String nome = (String) table.getValueAt( table.getSelectedRow(), 0);
 						Cidade cid = Fachada.localizarCidade(nome);
-
+						
 						if(cid != null) {
 							String texto="";
 							if(cid.getApresentacoes().isEmpty())
 								texto = "nao possui apresentacoes";
 							else
 								for (Apresentacao a : cid.getApresentacoes()){
-									texto = texto + a.getId()+ "-" + a.getData() + "-" + a.getArtista() + a.getPrecoIngresso()+ "\n";
+									texto += + a.getId()+ "-" + a.getData() + "-" + a.getArtista() + a.getPrecoIngresso()+ "\n";
 								}
 
-							JOptionPane.showMessageDialog(frame, texto, "alugueis", 1);
+							JOptionPane.showMessageDialog(frame, texto, "Apresentações", 1);
 						}
 					}
 				}

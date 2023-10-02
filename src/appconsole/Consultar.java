@@ -29,7 +29,7 @@ public class Consultar {
 
 
 			System.out.println("\nlistar Artistas que se apresentarão na cidade de Campina Grande");
-			for(Apresentacao apr : Fachada.Listarapresentacoes("Campina Grande"))
+			for(Artista apr : Fachada.apresentacaoCidade("Campina Grande"))
 				System.out.println(apr);
 
 

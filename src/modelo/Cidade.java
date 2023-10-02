@@ -24,6 +24,6 @@ public ArrayList<Apresentacao> getApresentacoes(){
 }
 @Override
 public String toString() {
-	return "Cidade [nome=" + nome + "]";
+	return "Cidade = [" + nome + "]";
 }
 }

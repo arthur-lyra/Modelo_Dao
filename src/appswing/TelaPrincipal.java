@@ -50,7 +50,7 @@ public class TelaPrincipal {
 	 */
 	public TelaPrincipal() {
 		initialize();
-		frame.setTitle("Locadora - usuario: "+ Fachada.logado.getNome());
+		frame.setTitle("Cronograma - usuario: "+ Fachada.logado.getNome());
 		frame.setVisible(true);
 	}
 

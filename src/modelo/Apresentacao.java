@@ -47,7 +47,7 @@ public class Apresentacao {
 	}
 	@Override
 	public String toString() {
-		return "Apresentacao [id=" + id + ", data=" + data + ", artista=" + artista + ", cidade=" + cidade
-				+ ", precoIngresso=" + precoIngresso + "]";
+		return "Apresentacao [id = " + id + ", data = " + data + ", artista=" + artista + ", " + cidade
+				+ ", precoIngresso = " + precoIngresso + "]";
 	}
 }

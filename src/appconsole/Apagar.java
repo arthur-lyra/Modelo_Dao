@@ -16,6 +16,7 @@ public class Apagar {
 		try {
 			Fachada.inicializar();
 			Fachada.excluirArtista("Fausto Ayres");
+			Fachada.excluirApresentacao(1);
 			System.out.println("Artista excluido");
 
 		} catch (Exception e) {
