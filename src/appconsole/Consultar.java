@@ -29,7 +29,7 @@ public class Consultar {
 
 
 			System.out.println("\ncarros que possuem 1 alugueis");
-			for(Artista apr : Fachada.Apresentacaocidade(n:"Campina Grande"))
+			for(Artista apr : Fachada.Apresentacaocidade(:"Campina Grande"))
 				System.out.println(apr);
 
 

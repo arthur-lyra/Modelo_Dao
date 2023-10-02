@@ -15,6 +15,9 @@ public class Artista {
 			this.nome = nome;
 		}
 
+		public isPresent(int id){
+
+		}
 		public void adicionar(Apresentacao a){
 			a.setArtista(this);
 			this.apresentacoes.add(a);

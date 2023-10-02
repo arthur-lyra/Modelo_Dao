@@ -1,10 +1,4 @@
 package regras_negocio;
-/**********************************
- * IFPB - Curso Superior de Tec. em Sist. para Internet
- * POB - Persistencia de Objetos
- * Prof. Fausto Ayres
- *
- */
 
 import java.util.List;
 
@@ -47,117 +41,68 @@ public class Fachada {
 		return artista;
 	}
 
-	public static Aluguel alugarCarro(String cpf, String placa, double diaria, String data1, String data2) throws Exception{
+	public static Apresentacao cadastrarApresentacao(int id, String data, Artista artista, Cidade cidade, int precoIngresso) throws Exception{
 		DAO.begin();
-		Carro car =  daoartista.read(placa);
-		if(car==null) 
-			throw new Exception ("carro incorreto para aluguel "+placa);
-		if(car.isAlugado()) 
-			throw new Exception ("carro ja esta alugado:"+placa);
+		Artista art =  daoartista.read(artista);
+			if(art==null)
+				throw new Exception ("Artista "+ artista + "não existe");
 
-		Cliente cli = daocidade.read(cpf);
-		if(cli==null) 
-			throw new Exception ("cliente incorreto para aluguel " + cpf);
+		Apresentacao ap = daoapresentacao.read(id);
+			if(ap!=null)
+				throw new Exception("Apresentacao ja cadastrada para o artista" + artista);
 
-		Aluguel aluguel = new Aluguel(data1,data2, diaria);
-		aluguel.setCarro(car);
-		aluguel.setCliente(cli);
-		car.adicionar(aluguel);
-		car.setAlugado(true);
-		cli.adicionar(aluguel);
+		Cidade cid = daocidade.read(cidade);
+			if(cid==null)
+				throw new Exception("Cidade " + cidade + "nao existe");
 
-		daoapresentacao.create(aluguel);
-		daoartista.update(car);
-		daocidade.update(cli);
+		Apresentacao apresentacao =  new Apresentacao(id,data,art,cidade,precoIngresso);
+		art.adicionar(apresentacao);
+		daoapresentacao.create(apresentacao);
+		daoartista.update(art);
 		DAO.commit();
-		return aluguel;
+		return apresentacao;
 	}
 
-	public static void devolverCarro(String placa) throws Exception{
+	public Cidade cadastrarCidade(String nome) throws Exception{
+
 		DAO.begin();
-		Carro car =  daoartista.read(placa);
-		if(car==null) 
-			throw new Exception ("carro incorreto para devolucao");
 
-		if(car.getAlugueis().isEmpty()) 
-			throw new Exception ("carro nao pode ser devolvido - nao esta alugado");
+		Cidade cidade = daocidade.read(nome);
 
-		car.setAlugado(false);
-		// obter o ultimo aluguel do carro
-		Aluguel alug = car.getAlugueis().get(car.getAlugueis().size()-1);
-		alug.setFinalizado(true);
+		if(cidade!=null)
+			throw new Exception("A cidade" + nome + "ja está cadastrada");
 
-		daoartista.update(car);
+		Cidade cid = new Cidade(nome);
+		daocidade.create(cid);
 		DAO.commit();
+		return cid;
 	}
 
 	public static void excluirArtista(String nome) throws Exception{
 		DAO.begin();
 		Artista art =  daoartista.read(nome);
 		if(art==null) 
-			throw new Exception ("Artista incorreto para exclusao " + nome);
+			throw new Exception ("Artista " + nome + " incorreto para exclusao");
 
-		//apagar carro e seus alugueis em cascata
+		//apagar artista e suas apresentacoes em cascata
 		daoartista.delete(art);
 		DAO.commit();
 	}
 
-	public static Apresentacao cadastrarApresentacao(Integer id, String cpf) throws Exception{
+	public static void excluirApresentacao(int id) throws Exception{
 		DAO.begin();
-		Apresentacao apr = daoapresentacao.read(id);
-		if (apr!=null)
-			throw new Exception("Pessoa ja cadastrado:" + cpf);
-		apr = new Apresentacao(nome, cpf);
+		Apresentacao ap = daoapresentacao.read(id);
 
-		daocidade.create(cli);
-		DAO.commit();
-		return cli;
-	}
-	public static void excluirCliente(String cpf) throws Exception{
-		DAO.begin();
-		Cliente cli =  daocidade.read(cpf);
-		if(cli==null) 
-			throw new Exception ("cliente incorreto para exclusao " + cpf);
+		if(ap==null)
+			throw new Exception("Id:" + id + "incorreto para exclusão da apresentacao");
 
-		if(!cli.getAlugueis().isEmpty()) {
-			List<Aluguel> alugueis = cli.getAlugueis();
-			Aluguel ultimo = alugueis.get(alugueis.size()-1);
-			if(ultimo !=null && !ultimo.isFinalizado()) 
-				throw new Exception ("Nao pode excluir cliente com carro alugado: " + cpf);
-		}
-		
-		//alterar os carros dos alugueis 
-		for (Aluguel a : cli.getAlugueis()) {
-			Carro car = a.getCarro();
-			car.remover(a);
-			daoartista.update(car);
-			daoapresentacao.delete(a);
-		}
-
-		//apagar carro e seus alugueis em cascata
-		daocidade.delete(cli);
+		//apagar apresentacao e seus artistas em cascata
+		daoapresentacao.delete(ap);
 		DAO.commit();
 	}
 
-	public static void excluirAluguel(int id) throws Exception{
-		DAO.begin();
-		Aluguel aluguel =  daoapresentacao.read(id);
-		if(aluguel==null) 
-			throw new Exception ("aluguel incorreto para exclusao " + id);
+	public static void excluirCidade(String nome) throws Exception{
 
-		if(! aluguel.isFinalizado()) 
-			throw new Exception ("aluguel nao finalizado nao pode ser excluido " + id);
-
-		//alterar os clientes dos alugueis do carro
-		Cliente cli = aluguel.getCliente();
-		Carro car = aluguel.getCarro();
-		cli.remover(aluguel);
-		car.remover(aluguel);
-
-		daocidade.update(cli);
-		daoartista.update(car);
-		daoapresentacao.delete(aluguel);
-		DAO.commit();
 	}
 
 	public static List<Artista>  listarArtistas(){
