@@ -41,7 +41,7 @@ public class Fachada {
 		return artista;
 	}
 
-	public static Apresentacao cadastrarApresentacao(int id, String data, Artista artista, Cidade cidade, int precoIngresso) throws Exception{
+	public static Apresentacao cadastrarApresentacao(int id, String data, String artista, String cidade, int precoIngresso) throws Exception{
 		DAO.begin();
 		Artista art =  daoartista.read(artista);
 			if(art==null)
@@ -55,7 +55,7 @@ public class Fachada {
 			if(cid==null)
 				throw new Exception("Cidade " + cidade + "nao existe");
 
-		Apresentacao apresentacao =  new Apresentacao(id,data,art,cidade,precoIngresso);
+		Apresentacao apresentacao =  new Apresentacao(id,data,art,cid,precoIngresso);
 		art.adicionar(apresentacao);
 		daoapresentacao.create(apresentacao);
 		daoartista.update(art);
@@ -98,6 +98,18 @@ public class Fachada {
 
 		//apagar apresentacao e seus artistas em cascata
 		daoapresentacao.delete(ap);
+		DAO.commit();
+	}
+
+	public static void excluirCidade(String nome) throws Exception{
+		DAO.begin();
+		Cidade cid = daocidade.read(nome);
+
+		if(cid==null)
+			throw new Exception( cid + "incorreta para exclusão");
+
+		//apagar cidade
+		daocidade.delete(cid);
 		DAO.commit();
 	}
 
@@ -155,13 +167,16 @@ public class Fachada {
 		return resultados;
 	}
 
-	public static List<Artista>  Apresentacaocidade(String n){	
+	public static List<Artista>  apresentacaoCidade(String n){
 		DAO.begin();
 		List<Artista> resultados =  daoartista.Apresentacaocidade(n);
 		DAO.commit();
 		return resultados;
 	}
 
+	public static Cidade localizarCidade(String nome){
+		return daocidade.read(nome);
+	}
 	public static Artista localizarArtista(String nome){
 		return daoartista.read(nome);
 	}

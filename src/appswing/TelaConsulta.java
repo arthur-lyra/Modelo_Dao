@@ -32,8 +32,9 @@ import javax.swing.table.DefaultTableModel;
 
 import com.db4o.ObjectContainer;
 
-import modelo.Aluguel;
-import modelo.Carro;
+import modelo.Apresentacao;
+import modelo.Artista;
+import modelo.Cidade;
 import regras_negocio.Fachada;
 
 public class TelaConsulta {
@@ -135,20 +136,20 @@ public class TelaConsulta {
 					label_4.setText("consulta nao selecionada");
 				else
 					switch(index) {
-					case 0: 
-						List<Aluguel> resultado1 = Fachada.alugueisFinalizados();
-						listagemAluguel(resultado1);
+					case 0:
+						String n = JOptionPane.showInputDialog("digite a data");
+						String data = n;
+						List<Apresentacao> resultado1 = Fachada.Listarapresentacoes(data);
+						listagemApresentacao(resultado1);
 						break;
 					case 1: 
-						String modelo = JOptionPane.showInputDialog("digite o modelo");
-						List<Aluguel> resultado2 = Fachada.alugueisModelo(modelo);
-						listagemAluguel(resultado2);
+						String nome = JOptionPane.showInputDialog("digite a cidade");
+						List<Artista> resultado2 = Fachada.apresentacaoCidade(nome);
+						listagemArtista(resultado2);
 						break;
-					case 2: 
-						String n = JOptionPane.showInputDialog("digite N");
-						int numero = Integer.parseInt(n);
-						List<Carro> resultado3 = Fachada.carrosNAlugueis(numero);
-						listagemCarro(resultado3);
+					case 2:
+						List<Artista> resultado3 = Fachada.ListarMaiorApresentacao();
+						listagemArtista(resultado3);
 						break;
 
 					}
@@ -160,28 +161,26 @@ public class TelaConsulta {
 
 		comboBox = new JComboBox();
 		comboBox.setToolTipText("selecione a consulta");
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"alugueis finalizados", "alugueis de um determinado modelo de carro", "carros que possuem N alugueis"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"listar Apresentações na data x", "Artistas que se apresentarão na cidade x", "artista com o maior número de apresentações"}));
 		comboBox.setBounds(21, 10, 513, 22);
 		frame.getContentPane().add(comboBox);
 	}
 
-	public void listagemAluguel(List<Aluguel> lista) {
+	public void listagemApresentacao(List<Apresentacao> lista) {
 		try{
 			// o model armazena todas as linhas e colunas do table
 			DefaultTableModel model = new DefaultTableModel();
 
 			//adicionar colunas no model
 			model.addColumn("id");
-			model.addColumn("nome");
-			model.addColumn("placa");
-			model.addColumn("data inicial");
-			model.addColumn("data final");
-			model.addColumn("total a pagar");
-			model.addColumn("finalizado");
+			model.addColumn("data");
+			model.addColumn("artista");
+			model.addColumn("cidade");
+			model.addColumn("preco ingresso");
 
 			//adicionar linhas no model
-			for(Aluguel aluguel : lista) {
-				model.addRow(new Object[]{aluguel.getId(), aluguel.getCliente().getNome(), aluguel.getCarro().getPlaca(), aluguel.getDatainicio(), aluguel.getDatafim(), aluguel.getValor(), aluguel.isFinalizado()});
+			for(Apresentacao apresentacao : lista) {
+				model.addRow(new Object[]{apresentacao.getId(), apresentacao.getData(), apresentacao.getArtista(), apresentacao.getCidade(), apresentacao.getPrecoIngresso()});
 			}
 			//atualizar model no table (visualizacao)
 			table.setModel(model);
@@ -192,20 +191,18 @@ public class TelaConsulta {
 			label.setText(erro.getMessage());
 		}
 	}
-	
-	public void listagemCarro(List<Carro> lista) {
+
+	public void listagemArtista(List<Artista> lista) {
 		try{
-			// model armazena todas as linhas e colunas do table
+			// o model armazena todas as linhas e colunas do table
 			DefaultTableModel model = new DefaultTableModel();
 
 			//adicionar colunas no model
-			model.addColumn("placa");
-			model.addColumn("modelo");
-			model.addColumn("alugado");
+			model.addColumn("nome");
 
 			//adicionar linhas no model
-			for(Carro car : lista) {
-				model.addRow(new Object[]{car.getPlaca(), car.getModelo(), car.isAlugado()} );
+			for(Artista a : lista) {
+				model.addRow(new Object[]{a.getNome()});
 			}
 			//atualizar model no table (visualizacao)
 			table.setModel(model);
@@ -216,5 +213,4 @@ public class TelaConsulta {
 			label.setText(erro.getMessage());
 		}
 	}
-
 }

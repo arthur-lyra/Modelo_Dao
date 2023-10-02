@@ -8,9 +8,9 @@
 package appconsole;
 
 import daodb4o.Util;
-import modelo.Aluguel;
-import modelo.Carro;
-import modelo.Cliente;
+import modelo.Apresentacao;
+import modelo.Artista;
+import modelo.Cidade;
 import modelo.Usuario;
 import regras_negocio.Fachada;
 
@@ -19,17 +19,17 @@ public class Listar {
 	public Listar() {
 		try {
 			Fachada.inicializar();
-			System.out.println("\n---listagem de carros:");
-			for(Carro c: Fachada.listarCarros())
-				System.out.println(c);
+			System.out.println("\n---listagem de artistas:");
+			for(Artista a: Fachada.listarArtistas())
+				System.out.println(a);
 
-			System.out.println("\n---listagem de clientes:");
-			for(Cliente c: Fachada.listarClientes())
+			System.out.println("\n---listagem de cidades:");
+			for(Cidade c: Fachada.listarCidades())
 				System.out.println(c);
 			
-			System.out.println("\n---listagem de alugueis:");
-			for(Aluguel c: Fachada.listarAlugueis())
-				System.out.println(c);
+			System.out.println("\n---listagem de apresentacoes:");
+			for(Apresentacao a: Fachada.listarApresentacao())
+				System.out.println(a);
 
 			System.out.println("\n---listagem de usuarios:");
 			for(Usuario u: Fachada.listarUsuarios())

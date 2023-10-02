@@ -16,45 +16,39 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.db4o.ObjectContainer;
 
-import modelo.Aluguel;
+import modelo.Apresentacao;
+import modelo.Cidade;
 import regras_negocio.Fachada;
 
-public class TelaAluguel {
+public class TelaCidade {
 	private JDialog frame;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
 	private JButton button;
 	private JButton button_1;
 	private JButton button_2;
 	private JLabel label;
-	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
 	private JLabel label_4;
-	private JLabel label_5;
-	private JLabel label_6;
+
 	private JButton button_3;
 
 	/**
@@ -64,7 +58,7 @@ public class TelaAluguel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaAluguel tela = new TelaAluguel();
+					TelaCidade tela = new TelaCidade();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,7 +69,7 @@ public class TelaAluguel {
 	/**
 	 * Create the application.
 	 */
-	public TelaAluguel() {
+	public TelaCidade() {
 		initialize();
 		frame.setVisible(true);
 	}
@@ -86,9 +80,10 @@ public class TelaAluguel {
 	private void initialize() {
 		frame = new JDialog();
 		frame.setModal(true);
+
 		frame.setResizable(false);
-		frame.setTitle("Aluguel");
-		frame.setBounds(100, 100, 729, 419);
+		frame.setTitle("Cidade");
+		frame.setBounds(100, 100, 729, 385);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.addWindowListener(new WindowAdapter() {
@@ -111,13 +106,13 @@ public class TelaAluguel {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				label_6.setText("selecionado="+ (int) table.getValueAt( table.getSelectedRow(), 0));
+				label_4.setText("selecionado="+ (String) table.getValueAt( table.getSelectedRow(), 0));
 			}
 		});
 		table.setGridColor(Color.BLACK);
 		table.setRequestFocusEnabled(false);
 		table.setFocusable(false);
-		table.setBackground(new Color(144, 238, 144));
+		table.setBackground(Color.YELLOW);
 		table.setFillsViewportHeight(true);
 		table.setRowSelectionAllowed(true);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -129,41 +124,36 @@ public class TelaAluguel {
 
 		label = new JLabel("");		//label de mensagem
 		label.setForeground(Color.BLUE);
-		label.setBounds(12, 355, 688, 14);
+		label.setBounds(21, 321, 688, 14);
 		frame.getContentPane().add(label);
 
-		label_6 = new JLabel("resultados:");
-		label_6.setBounds(21, 190, 431, 14);
-		frame.getContentPane().add(label_6);
+		label_4 = new JLabel("resultados:");
+		label_4.setBounds(21, 190, 431, 14);
+		frame.getContentPane().add(label_4);
 
-		label_1 = new JLabel("Data de In\u00EDcio:");
-		label_1.setHorizontalAlignment(SwingConstants.LEFT);
-		label_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		label_1.setBounds(12, 269, 89, 14);
-		frame.getContentPane().add(label_1);
+		label_2 = new JLabel("Nome:");
+		label_2.setHorizontalAlignment(SwingConstants.LEFT);
+		label_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		label_2.setBounds(21, 269, 71, 14);
+		frame.getContentPane().add(label_2);
 
 		textField = new JTextField();
 		textField.setFont(new Font("Dialog", Font.PLAIN, 12));
 		textField.setColumns(10);
-		textField.setBounds(103, 266, 195, 20);
+		textField.setBounds(68, 264, 195, 20);
 		frame.getContentPane().add(textField);
 
-		button_1 = new JButton("Criar novo aluguel");
+		button_1 = new JButton("Criar nova cidade");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty() || textField_3.getText().isEmpty()) {
+					if(textField.getText().isEmpty() || textField_1.getText().isEmpty()) {
 						label.setText("campo vazio");
 						return;
 					}
-					String dataInicio = textField.getText();
-					String dataFim = textField_1.getText();
-					String placa = textField_2.getText();
-					String cpf = textField_3.getText();
-					double diaria = Double.parseDouble(textField_4.getText());
-
-					Fachada.alugarCarro(cpf, placa, diaria, dataInicio, dataFim);
-					label.setText("aluguel criado");
+					String nome = textField.getText();
+					Fachada.cadastrarCidade(nome);
+					label.setText("cidade criada: " + nome);
 					listagem();
 				}
 				catch(Exception ex) {
@@ -172,7 +162,7 @@ public class TelaAluguel {
 			}
 		});
 		button_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		button_1.setBounds(281, 324, 153, 23);
+		button_1.setBounds(525, 265, 153, 23);
 		frame.getContentPane().add(button_1);
 
 		button = new JButton("Listar");
@@ -185,29 +175,18 @@ public class TelaAluguel {
 		button.setBounds(308, 11, 89, 23);
 		frame.getContentPane().add(button);
 
-		label_2 = new JLabel("Data fim aluguel");
-		label_2.setHorizontalAlignment(SwingConstants.LEFT);
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		label_2.setBounds(310, 269, 101, 14);
-		frame.getContentPane().add(label_2);
 
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Dialog", Font.PLAIN, 12));
-		textField_1.setColumns(10);
-		textField_1.setBounds(414, 266, 168, 20);
-		frame.getContentPane().add(textField_1);
-
-		button_2 = new JButton("Apagar selecionado");
+		button_2 = new JButton("Apagar selecionada");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					if (table.getSelectedRow() >= 0) {	
-						int idAluguel = (int) table.getValueAt( table.getSelectedRow(), 0);
+					if (table.getSelectedRow() >= 0){	
+						label.setText("nao implementado " );
+						String nome = (String) table.getValueAt( table.getSelectedRow(), 0);
 
-						Fachada.excluirAluguel(idAluguel);
-						label.setText("aluguel apagado" );
+						Fachada.excluirCidade(nome);
+						label.setText("cidade apagada" );
 						listagem();
-
 					}
 					else
 						label.setText("nao selecionado");
@@ -218,100 +197,64 @@ public class TelaAluguel {
 			}
 		});
 		button_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		button_2.setBounds(229, 215, 171, 23);
+		button_2.setBounds(281, 213, 171, 23);
 		frame.getContentPane().add(button_2);
 
-
-		textField_2 = new JTextField();
-		textField_2.setBounds(113, 297, 130, 19);
-		frame.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
-
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(47, 308, 1, 16);
-		frame.getContentPane().add(textPane);
-
-		label_3 = new JLabel("Placa do carro");
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		label_3.setBounds(12, 295, 89, 16);
-		frame.getContentPane().add(label_3);
-
-		label_4 = new JLabel("CPF do cliente");
-		label_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		label_4.setBounds(253, 297, 116, 16);
-		frame.getContentPane().add(label_4);
-
-		textField_3 = new JTextField();
-		textField_3.setBounds(345, 294, 130, 20);
-		frame.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
-
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Dialog", Font.PLAIN, 12));
-		textField_4.setColumns(10);
-		textField_4.setBounds(555, 298, 168, 20);
-		frame.getContentPane().add(textField_4);
-
-		label_5 = new JLabel("diaria");
-		label_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		label_5.setBounds(498, 298, 52, 16);
-		frame.getContentPane().add(label_5);
-
-		button_3 = new JButton("devolver carro");
+		button_3 = new JButton("exibir cidades");
+		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					if (table.getSelectedRow() >= 0) {	
-						String placa = (String) table.getValueAt( table.getSelectedRow(), 2); //coluna 2
-						Fachada.devolverCarro(placa);
-						label.setText("carro devolvido" );
-						listagem();
+					if (table.getSelectedRow() >= 0){	
+						String nome = (String) table.getValueAt( table.getSelectedRow(), 0);
+						Cidade cid = Fachada.localizarCidade(nome);
+
+						if(cid != null) {
+							String texto="";
+							if(cid.getApresentacoes().isEmpty())
+								texto = "nao possui apresentacoes";
+							else
+								for (Apresentacao a : cid.getApresentacoes()){
+									texto = texto + a.getId()+ "-" + a.getData() + "-" + a.getArtista() + a.getPrecoIngresso()+ "\n";
+								}
+
+							JOptionPane.showMessageDialog(frame, texto, "alugueis", 1);
+						}
 					}
 				}
-				catch(Exception ex) {
-					label.setText(ex.getMessage());
+				catch(Exception erro) {
+					label.setText(erro.getMessage());
 				}
 			}
 		});
-		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		button_3.setBounds(411, 215, 171, 23);
+		button_3.setBounds(47, 215, 134, 23);
 		frame.getContentPane().add(button_3);
 	}
 
 	public void listagem() {
 		try{
-			//ler os carros do banco
-			List<Aluguel> lista = Fachada.listarAlugueis();
+			List<Cidade> lista = Fachada.listarCidades();
 
-			// o model armazena todas as linhas e colunas do table
+			// model armazena todas as linhas e colunas do table
 			DefaultTableModel model = new DefaultTableModel();
 
 			//adicionar colunas no model
-			model.addColumn("id");
-			model.addColumn("nome");
-			model.addColumn("placa");
-			model.addColumn("data inicial");
-			model.addColumn("data final");
-			model.addColumn("total a pagar");
-			model.addColumn("finalizado");
+			model.addColumn("Cidade");
 
 			//adicionar linhas no model
-			for(Aluguel aluguel : lista) {
-				model.addRow(new Object[]{aluguel.getId(), aluguel.getCliente().getNome(), aluguel.getCarro().getPlaca(), aluguel.getDatainicio(), aluguel.getDatafim(), aluguel.getValor(), aluguel.isFinalizado()});
+			for(Cidade cid : lista) {
+				model.addRow(new Object[]{cid.getNome()} );
 			}
-
 
 			//atualizar model no table (visualizacao)
 			table.setModel(model);
 
-			label_6.setText("resultados: "+lista.size()+ " objetos");
+			label_4.setText("resultados: "+lista.size()+ " objetos");
 		}
 		catch(Exception erro){
 			label.setText(erro.getMessage());
 		}
 	}
-
-	
 
 
 }

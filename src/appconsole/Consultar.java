@@ -23,13 +23,13 @@ public class Consultar {
 				System.out.println(a);
 
 
-			System.out.println("\nalugueis finalizados");
+			System.out.println("\nlistar Apresentações na data 17/10/2023");
 			for(Apresentacao a : Fachada.Listarapresentacoes("17/10/2023"))
 				System.out.println(a);
 
 
-			System.out.println("\ncarros que possuem 1 alugueis");
-			for(Artista apr : Fachada.Apresentacaocidade("Campina Grande"))
+			System.out.println("\nlistar Artistas que se apresentarão na cidade de Campina Grande");
+			for(Apresentacao apr : Fachada.Listarapresentacoes("Campina Grande"))
 				System.out.println(apr);
 
 
