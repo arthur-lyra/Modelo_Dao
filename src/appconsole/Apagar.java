@@ -15,8 +15,8 @@ public class Apagar {
 	public Apagar() {
 		try {
 			Fachada.inicializar();
-			Fachada.excluirCarro("BBB2000");		 
-			System.out.println("carro excluido");
+			Fachada.excluirArtista("Fausto Ayres");
+			System.out.println("Artista excluido");
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

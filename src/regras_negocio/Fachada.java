@@ -63,7 +63,7 @@ public class Fachada {
 		return apresentacao;
 	}
 
-	public Cidade cadastrarCidade(String nome) throws Exception{
+	public static Cidade cadastrarCidade(String nome) throws Exception{
 
 		DAO.begin();
 
@@ -101,19 +101,18 @@ public class Fachada {
 		DAO.commit();
 	}
 
-	public static void excluirCidade(String nome) throws Exception{
+	public static void alterarIngresso(int id, int precoIngresso) throws Exception{
 		DAO.begin();
-		Cidade cidade = daocidade.read(nome);
+		Apresentacao ap = daoapresentacao.read(id);
 
-		if(cidade==null)
-			throw new Exception("Cidade " + nome + "incorreta para exclusão");
-
-		Artista art = daoartista.read(art);
-		for (Apresentacao a : art.getApresentacoes()){
-
+		if(ap==null){
+			throw new Exception("Id: " + id + "invalido");
 		}
-	}
 
+		ap.setPrecoIngresso(precoIngresso);
+		daoapresentacao.update(ap);
+		DAO.commit();
+	}
 	public static List<Artista>  listarArtistas(){
 		DAO.begin();
 		List<Artista> resultados =  daoartista.readAll();

@@ -14,28 +14,28 @@ public class Cadastrar {
 	public Cadastrar() {
 		try {
 			Fachada.inicializar();
-			System.out.println("cadastrando carro...");
-			Fachada.cadastrarCarro("AAA1000", "palio");
-			Fachada.cadastrarCarro("BBB2000", "onix");
-			Fachada.cadastrarCarro("CCC3000", "civic");
+			System.out.println("cadastrando artista...");
+			Fachada.cadastrarArtista("Fausto Ayres");
+			Fachada.cadastrarArtista("Arthur Lyra");
+			Fachada.cadastrarArtista("Brian Rafael");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 		try {
-			System.out.println("cadastrando cliente...");
-			Fachada.cadastrarCliente("joao", "1111");
-			Fachada.cadastrarCliente("maria", "2222");
-			Fachada.cadastrarCliente("jose", "3333");
+			System.out.println("cadastrando cidade...");
+			Fachada.cadastrarCidade("João Pessoa");
+			Fachada.cadastrarCidade("Sapé");
+			Fachada.cadastrarCidade("Campina Grande");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 		try {
-			System.out.println("alugando carro...");
-			Fachada.alugarCarro("1111","AAA1000",100.0 , "01/05/2022", "10/05/2022");
-			Fachada.alugarCarro("2222","BBB2000",200.0 , "01/05/2022", "10/05/2022");
-			Fachada.alugarCarro("2222","CCC3000",300.0 , "01/05/2022", "10/05/2022");
+			System.out.println("cadastrando apresentacoes...");
+			Fachada.cadastrarApresentacao(1,"17/10/2023", "Fausto Ayres" , "01/05/2022", "10/05/2022");
+			Fachada.cadastrarApresentacao(2,"29/03/2024",200.0 , "01/05/2022", "10/05/2022");
+			Fachada.cadastrarApresentacao(3,"07/09/2023",300.0 , "01/05/2022", "10/05/2022");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

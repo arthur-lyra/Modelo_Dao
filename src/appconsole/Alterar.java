@@ -13,8 +13,9 @@ public class Alterar {
 	public Alterar() {
 		try {
 			Fachada.inicializar();
-			Fachada.devolverCarro("AAA1000");		
-			System.out.println("carro devolvido");
+			Fachada.localizarApresentacao(1);
+			Fachada.alterarIngresso(1, 150);
+			System.out.println("Preco do ingresso alterado");
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
