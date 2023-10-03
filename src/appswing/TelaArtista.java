@@ -202,13 +202,20 @@ public class TelaArtista {
 						Artista art = Fachada.localizarArtista(nome);
 
 						if(art !=  null) {
+							List<Apresentacao> apresentacoes = Fachada.listarApresentacao();
+							boolean encontrouApresentacoes = false;
 							String texto="";
-							if(art.getApresentacoes().isEmpty())
-								texto = "nao possui apresentacoes";
-							else
-								for (Apresentacao a : art.getApresentacoes())
-									texto = texto + a.getId()+ " - " + a.getCidade() + " - " +a.getData() + " - " + a.getPrecoIngresso() + "\n";
 
+								for (Apresentacao a : apresentacoes){
+									if(a.getArtista().equals(art)){
+										encontrouApresentacoes = true;
+										texto = texto + a.getId() + " - " + a.getCidade() + " - " + a.getData() + " - " + a.getPrecoIngresso() + "\n";
+									}
+								}
+
+								if(!encontrouApresentacoes){
+									texto =  "Nao possui apresentacoes";
+								}
 							JOptionPane.showMessageDialog(frame, texto, "apresentacoes", 1);
 						}
 					}

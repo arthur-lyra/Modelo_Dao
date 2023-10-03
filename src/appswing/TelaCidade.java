@@ -206,7 +206,7 @@ public class TelaCidade {
 						
 						if(cid != null) {
 							String texto="";
-                                List<Apresentacao> apresentacoes = Fachada.listarApresentacao();
+                            List<Apresentacao> apresentacoes = Fachada.listarApresentacao();
                             boolean encontrouApresentacoes = false;
 
                             for (Apresentacao a : apresentacoes) {
